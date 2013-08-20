@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+
 import unittest
 
-from ganglia import GMetric
+from .ganglia import GMetric
 
 
 class TestGMetric(unittest.TestCase):
@@ -20,7 +21,7 @@ class TestGMetric(unittest.TestCase):
         }
 
         meta, data = self.gmetric.pack(metric)
-        self.assertEqual(meta, "\000\000\000\200\000\000\000\000\000\000\000\003foo\000\000\000\000\000\000\000\000\006string\000\000\000\000\000\003foo\000\000\000\000\000\000\000\000\003\000\000\000<\x00\x00\x00\x00\x00\x00\x00\x00")
+        self.assertEqual(meta, b"\000\000\000\200\000\000\000\000\000\000\000\003foo\000\000\000\000\000\000\000\000\006string\000\000\000\000\000\003foo\000\000\000\000\000\000\000\000\003\000\000\000<\x00\x00\x00\x00\x00\x00\x00\x00")
 
     def test_missing_keys(self):
         for key in ('name', 'value', 'type'):
@@ -34,14 +35,14 @@ class TestGMetric(unittest.TestCase):
             try:
                 self.gmetric.pack(metric)
             except TypeError:
-                self.fail("Raiseed TypeError for type {0}".format(kind))
+                self.fail("Raised TypeError for type {0}".format(kind))
         self.assertRaises(TypeError, self.gmetric.pack, {'name': 'foo', 'value': 'bar', 'type': 'int'})
 
     def test_spoofing(self):
         try:
-            metric = {'name': 'foo', 'type': 'uint8', 'value': 'bar', 'spoof': 1, 'host': 'host'}
+            metric = {'name': 'foo', 'type': 'uint8', 'value': 'bar', 'spoof': 1, 'hostname': 'host'}
             self.gmetric.pack(metric)
-            metric = {'name': 'foo', 'type': 'uint8', 'value': 'bar', 'spoof': True, 'host': 'host'}
+            metric = {'name': 'foo', 'type': 'uint8', 'value': 'bar', 'spoof': True, 'hostname': 'host'}
             self.gmetric.pack(metric)
         except:
             self.fail("Should not have raise exception")
@@ -49,8 +50,4 @@ class TestGMetric(unittest.TestCase):
     def test_group(self):
         metric = {'name': 'foo', 'type': 'uint8', 'value': 'bar', 'group': 'test'}
         meta, data = self.gmetric.pack(metric)
-        self.assertEqual(meta, "\x00\x00\x00\x80\x00\x00\x00\x00\x00\x00\x00\x03foo\x00\x00\x00\x00\x00\x00\x00\x00\x05uint8\x00\x00\x00\x00\x00\x00\x03foo\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00<\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x05GROUP\x00\x00\x00\x00\x00\x00\x04test")
-
-
-if __name__ == '__main__':
-    unittest.main()
+        self.assertEqual(meta, b"\x00\x00\x00\x80\x00\x00\x00\x00\x00\x00\x00\x03foo\x00\x00\x00\x00\x00\x00\x00\x00\x05uint8\x00\x00\x00\x00\x00\x00\x03foo\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00<\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x05GROUP\x00\x00\x00\x00\x00\x00\x04test")
