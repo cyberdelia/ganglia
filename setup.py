@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='ganglia',
-    version='0.1',
+    version='0.2',
     packages=['ganglia',],
     license='MIT',
     long_description=open('README.rst').read(),
