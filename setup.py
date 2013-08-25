@@ -6,6 +6,7 @@ setup(
     version='0.2.2',
     packages=['ganglia',],
     license='MIT',
+    description="A Ganglia client",
     long_description=open('README.rst').read(),
     author='Timothée Peignier',
     author_email='timothee.peignier@tryphon.org',
