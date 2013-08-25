@@ -30,8 +30,8 @@ class GMetric(object):
             self.socket.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 20)
         self.address = (parsed.hostname, parsed.port or 8670)
 
-    def send(self, metric):
-        meta, data = self.pack(metric)
+    def send(self, **kwargs):
+        meta, data = self.pack(kwargs)
         self.socket.send(meta)
         self.socket.send(data)
 
