@@ -91,6 +91,6 @@ class GMetric(object):
         data.pack_string(metric['name'])
         data.pack_int(int(metric['spoof']))
         data.pack_string(b"%s")
-        data.pack_string(metric['value'])
+        data.pack_string(bytes(metric['value']))
 
         return meta.get_buffer(), data.get_buffer()
