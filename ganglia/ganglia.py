@@ -28,12 +28,12 @@ class GMetric(object):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         if parsed.scheme == 'multicast':
             self.socket.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 20)
-        self.address = (parsed.hostname, parsed.port or 8670)
+        self.address = (socket.gethostbyname(parsed.hostname), parsed.port or 8670)
 
     def send(self, **kwargs):
         meta, data = self.pack(kwargs)
-        self.socket.send(meta)
-        self.socket.send(data)
+        self.socket.sendto(meta, self.address)
+        self.socket.sendto(data, self.address)
 
     def pack(self, values):
         metric = {
