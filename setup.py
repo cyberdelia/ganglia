@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='ganglia',
-    version='0.2.4',
+    version='0.3.0',
     packages=['ganglia',],
     license='MIT',
     description="A Ganglia client",
